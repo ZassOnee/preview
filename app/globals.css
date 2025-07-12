@@ -1,0 +1,460 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 340 82% 52%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 45 93% 58%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 340 75% 55%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 340 82% 52%;
+    --radius: 1rem;
+    --chart-1: 340 82% 52%;
+    --chart-2: 45 93% 58%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    /* Dynamic theme variables */
+    --dynamic-text-primary: rgba(255, 255, 255, 0.95);
+    --dynamic-text-secondary: rgba(255, 255, 255, 0.8);
+    --dynamic-text-muted: rgba(255, 255, 255, 0.6);
+    --dynamic-border: rgba(255, 255, 255, 0.2);
+    --dynamic-card-bg: rgba(255, 255, 255, 0.8);
+    --dynamic-card-border: rgba(255, 255, 255, 0.2);
+    --dynamic-input-bg: rgba(255, 255, 255, 0.9);
+    --dynamic-input-border: rgba(255, 255, 255, 0.3);
+    --dynamic-button-secondary: rgba(255, 255, 255, 0.15);
+    --dynamic-shadow: rgba(0, 0, 0, 0.1);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 340 82% 52%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 45 93% 58%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 340 75% 55%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 340 82% 52%;
+    --chart-1: 340 82% 52%;
+    --chart-2: 45 93% 58%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter;
+    background: linear-gradient(
+      135deg,
+      hsl(340, 82%, 52%) 0%,
+      hsl(350, 85%, 60%) 25%,
+      hsl(45, 93%, 58%) 50%,
+      hsl(40, 90%, 65%) 75%,
+      hsl(340, 75%, 55%) 100%
+    );
+    background-attachment: fixed;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    transition: all 0.5s ease;
+  }
+
+  /* Modal open state - disable scroll effects */
+  body.modal-open {
+    overflow: hidden;
+  }
+
+  body.modal-open .parallax-element,
+  body.modal-open .float-on-scroll {
+    transform: none !important;
+    animation: none !important;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(0, 0, 0, 0.05) 0%, transparent 50%);
+    background-size: 100% 100%, 80% 80%, 60% 60%;
+    pointer-events: none;
+    z-index: -2;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%),
+      linear-gradient(-45deg, transparent 40%, rgba(0, 0, 0, 0.02) 50%, transparent 60%);
+    background-size: 100px 100px, 150px 150px;
+    animation: grunge-move 20s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Stop background animation when modal is open */
+  body.modal-open::after {
+    animation-play-state: paused;
+  }
+
+  /* Dynamic text colors based on background */
+  body.has-custom-background h1,
+  body.has-custom-background h2,
+  body.has-custom-background h3,
+  body.has-custom-background h4,
+  body.has-custom-background h5,
+  body.has-custom-background h6 {
+    color: var(--dynamic-text-primary) !important;
+  }
+
+  body.has-custom-background p,
+  body.has-custom-background span,
+  body.has-custom-background div {
+    color: var(--dynamic-text-secondary);
+  }
+
+  body.has-custom-background .text-gray-600,
+  body.has-custom-background .text-gray-500,
+  body.has-custom-background .text-muted-foreground {
+    color: var(--dynamic-text-muted) !important;
+  }
+
+  /* Dynamic card styles */
+  body.has-custom-background .glass-card {
+    background: var(--dynamic-card-bg) !important;
+    border-color: var(--dynamic-card-border) !important;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px var(--dynamic-shadow) !important;
+  }
+
+  body.has-custom-background .modern-card {
+    background: var(--dynamic-card-bg) !important;
+    border: 1px solid var(--dynamic-card-border) !important;
+    box-shadow: 0 8px 32px var(--dynamic-shadow) !important;
+  }
+
+  /* Dynamic input styles */
+  body.has-custom-background input,
+  body.has-custom-background textarea,
+  body.has-custom-background select {
+    background: var(--dynamic-input-bg) !important;
+    border-color: var(--dynamic-input-border) !important;
+    color: var(--dynamic-text-primary) !important;
+  }
+
+  body.has-custom-background input::placeholder,
+  body.has-custom-background textarea::placeholder {
+    color: var(--dynamic-text-muted) !important;
+  }
+
+  /* Dynamic button styles */
+  body.has-custom-background .btn-secondary {
+    background: var(--dynamic-button-secondary) !important;
+    color: var(--dynamic-text-primary) !important;
+    border-color: var(--dynamic-border) !important;
+  }
+
+  /* Dynamic border styles */
+  body.has-custom-background .border,
+  body.has-custom-background .border-gray-200,
+  body.has-custom-background .border-gray-300 {
+    border-color: var(--dynamic-border) !important;
+  }
+
+  /* Dynamic badge styles */
+  body.has-custom-background .badge-outline {
+    border-color: var(--dynamic-border) !important;
+    color: var(--dynamic-text-primary) !important;
+  }
+
+  /* Header adjustments for custom backgrounds */
+  body.has-custom-background header {
+    background: rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--dynamic-border) !important;
+  }
+
+  /* Table styles for admin panel */
+  body.has-custom-background table {
+    background: var(--dynamic-card-bg) !important;
+  }
+
+  body.has-custom-background th,
+  body.has-custom-background td {
+    color: var(--dynamic-text-primary) !important;
+    border-color: var(--dynamic-border) !important;
+  }
+
+  body.has-custom-background .bg-gray-50 {
+    background: var(--dynamic-button-secondary) !important;
+  }
+
+  /* Alert and notification styles */
+  body.has-custom-background .bg-red-50 {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+  }
+
+  body.has-custom-background .bg-green-50 {
+    background: rgba(34, 197, 94, 0.1) !important;
+    border-color: rgba(34, 197, 94, 0.3) !important;
+  }
+
+  body.has-custom-background .bg-yellow-50 {
+    background: rgba(234, 179, 8, 0.1) !important;
+    border-color: rgba(234, 179, 8, 0.3) !important;
+  }
+
+  body.has-custom-background .bg-blue-50 {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+  }
+}
+
+@keyframes grunge-move {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50px, -50px, 0) rotate(360deg);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-xl shadow-black/5;
+    transition: all 0.3s ease;
+  }
+
+  .glass-card-dark {
+    @apply bg-black/20 backdrop-blur-sm border border-white/10 shadow-xl shadow-black/10;
+  }
+
+  .modern-card {
+    @apply glass-card rounded-2xl p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-black/10 hover:-translate-y-1;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-accent text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary to-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-xl shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/30 transition-all duration-300 hover:-translate-y-0.5;
+  }
+
+  /* Fixed modal positioning */
+  .fixed-modal {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    z-index: 9999 !important;
+  }
+
+  /* Dynamic text utilities */
+  .text-dynamic-primary {
+    color: var(--dynamic-text-primary);
+  }
+
+  .text-dynamic-secondary {
+    color: var(--dynamic-text-secondary);
+  }
+
+  .text-dynamic-muted {
+    color: var(--dynamic-text-muted);
+  }
+
+  .border-dynamic {
+    border-color: var(--dynamic-border);
+  }
+
+  .bg-dynamic-card {
+    background: var(--dynamic-card-bg);
+  }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Optimized scroll animations */
+.scroll-animate {
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-out {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+}
+
+.animate-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Parallax elements optimization */
+.parallax-element {
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.float-on-scroll {
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Floating animations */
+@keyframes float-gentle {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(0, -10px, 0) rotate(1deg);
+  }
+  50% {
+    transform: translate3d(0, -5px, 0) rotate(0deg);
+  }
+  75% {
+    transform: translate3d(0, -15px, 0) rotate(-1deg);
+  }
+}
+
+.float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+/* Custom scrollbar with smooth animation */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, hsl(340, 82%, 52%), hsl(45, 93%, 58%));
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, hsl(340, 85%, 55%), hsl(45, 95%, 60%));
+  transform: scaleY(1.1);
+}
+
+/* Background overlay transitions */
+.background-overlay {
+  transition: background-color 0.5s ease;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .parallax-element,
+  .float-on-scroll {
+    transform: none !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .parallax-element {
+    transform: none !important;
+  }
+
+  body {
+    background-attachment: scroll !important;
+  }
+}
+
+/* Low performance mode */
+.low-performance .parallax-element,
+.low-performance .float-on-scroll {
+  transform: none !important;
+  animation: none !important;
+}
+
+.low-performance .animate-in,
+.low-performance .animate-out {
+  opacity: 1 !important;
+  transform: none !important;
+}
